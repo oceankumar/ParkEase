@@ -6,8 +6,6 @@ import Badge from "../components/Badge.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import PageContainer from "../components/PageContainer.jsx";
 import Modal from "../components/Modal.jsx";
-import Select from "../components/Select.jsx";
-import Input from "../components/Input.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Skeleton from "../components/Skeleton.jsx";
@@ -36,14 +34,8 @@ export default function DashboardPage({
   const [isPendingBackend, setIsPendingBackend] = useState(() => !isBookingApiAvailable());
 
   // Modals state
-  const [findParkingModalOpen, setFindParkingModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [qrModalOpen, setQrModalOpen] = useState(false);
-
-  // Search demo form state inside modal
-  const [selectedMall, setSelectedMall] = useState("phoenix");
-  const [selectedVehicleType, setSelectedVehicleType] = useState("standard");
-  const [searchSuccessMessage, setSearchSuccessMessage] = useState(null);
 
   /**
    * Fetch bookings and summary metrics.
@@ -121,18 +113,6 @@ export default function DashboardPage({
     );
   }
 
-  const handleOpenFindParking = () => {
-    setSearchSuccessMessage(null);
-    setFindParkingModalOpen(true);
-  };
-
-  const handleSimulateSearch = (e) => {
-    e.preventDefault();
-    setSearchSuccessMessage(
-      "Slot reservation engine will be activated in Sprint 4. Real-time slot availability for Phoenix Marketcity is scheduled."
-    );
-  };
-
   const handleViewPass = (booking) => {
     setSelectedBooking(booking);
     setQrModalOpen(true);
@@ -162,9 +142,9 @@ export default function DashboardPage({
         actions={
           <div className="page-actions">
             <Button
+              to="/malls"
               variant="accent"
               size="sm"
-              onClick={handleOpenFindParking}
             >
               🅿 Find Parking
             </Button>
@@ -250,7 +230,7 @@ export default function DashboardPage({
               </p>
             </div>
           </div>
-          <Button variant="accent" size="sm" onClick={handleOpenFindParking}>
+          <Button to="/malls" variant="accent" size="sm">
             Search Available Slots ↗
           </Button>
         </Card>
@@ -305,7 +285,7 @@ export default function DashboardPage({
                 title="No Parking Reservations Found"
                 description="You haven't reserved any parking bays yet. Explore available shopping mall parking to reserve your first slot."
                 action={
-                  <Button variant="accent" size="sm" onClick={handleOpenFindParking}>
+                  <Button to="/malls" variant="accent" size="sm">
                     Find Parking Now
                   </Button>
                 }
@@ -391,70 +371,6 @@ export default function DashboardPage({
           )}
         </Card>
       </section>
-
-      {/* Find Parking Modal */}
-      <Modal
-        isOpen={findParkingModalOpen}
-        onClose={() => setFindParkingModalOpen(false)}
-        title="Find Mall Parking"
-        description="Search participating shopping malls and discover real-time bay availability."
-        actions={
-          <>
-            <Button variant="secondary" onClick={() => setFindParkingModalOpen(false)}>
-              Close
-            </Button>
-            <Button variant="accent" onClick={handleSimulateSearch}>
-              Check Availability
-            </Button>
-          </>
-        }
-      >
-        <form onSubmit={handleSimulateSearch} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <Select
-            label="Select Shopping Mall"
-            value={selectedMall}
-            onChange={(e) => setSelectedMall(e.target.value)}
-            options={[
-              { value: "phoenix", label: "Phoenix Marketcity (Kurla)" },
-              { value: "palladium", label: "Palladium & High Street Phoenix (Lower Parel)" },
-              { value: "r-city", label: "R City Mall (Ghatkopar)" },
-              { value: "inorbit", label: "Inorbit Mall (Malad)" },
-            ]}
-          />
-
-          <Select
-            label="Vehicle & Slot Preference"
-            value={selectedVehicleType}
-            onChange={(e) => setSelectedVehicleType(e.target.value)}
-            options={[
-              { value: "standard", label: "Standard 4-Wheeler Bay" },
-              { value: "ev", label: "EV Charging Dedicated Bay" },
-              { value: "accessible", label: "Accessible (Disability Reserved)" },
-              { value: "two-wheeler", label: "Two-Wheeler Slot" },
-            ]}
-          />
-
-          <Input
-            label="Vehicle License Plate"
-            placeholder="e.g. MH 02 AB 1234"
-            defaultValue={user?.phone ? `MH-01-${user.phone.slice(-4)}` : "MH-01-AB-1234"}
-            helperText="License plate will be encoded into your gate QR pass."
-          />
-
-          {searchSuccessMessage ? (
-            <div className="auth-status-banner info" role="status">
-              <div>
-                <strong>Notice: </strong>
-                <span>{searchSuccessMessage}</span>
-              </div>
-            </div>
-          ) : (
-            <p style={{ fontSize: "13px", color: "var(--color-text-secondary)", lineHeight: "1.5" }}>
-              Live mall bay inventories and dynamic reservation algorithms will connect during Sprint 3 &amp; 4.
-            </p>
-          )}
-        </form>
-      </Modal>
 
       {/* QR Pass / Booking Details Modal */}
       <Modal

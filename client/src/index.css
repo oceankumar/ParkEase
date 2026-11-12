@@ -1706,6 +1706,438 @@ h2 {
 }
 
 /* ==========================================================================
+   Mall Discovery & Details (Milestone 7)
+   ========================================================================== */
+
+.malls-discovery-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) 0 var(--space-16);
+}
+
+.malls-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.malls-filter-input-group {
+  flex: 2;
+  min-width: 240px;
+}
+
+.malls-filter-select-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.malls-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: 2px;
+}
+
+.malls-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.malls-results-count {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.malls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-6);
+}
+
+.mall-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mall-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-hover);
+}
+
+.mall-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.mall-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.3;
+}
+
+.mall-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.mall-meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: 1.5;
+}
+
+.mall-meta-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.mall-slots-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 10px;
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: var(--space-2);
+}
+
+.mall-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* Mall Details Page */
+.mall-details-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-6) 0 var(--space-16);
+}
+
+.mall-details-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.mall-details-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-8);
+}
+
+.mall-info-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin: var(--space-5) 0;
+}
+
+.mall-info-item {
+  padding: var(--space-4);
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.mall-info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mall-info-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.mall-tags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.mall-contact-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   Parking Availability UI (Milestone 8)
+   ========================================================================== */
+
+.parking-availability-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) 0 var(--space-16);
+}
+
+.parking-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.parking-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+}
+
+.parking-filter-input-group {
+  flex: 2;
+  min-width: 220px;
+}
+
+.parking-filter-select-group {
+  flex: 1;
+  min-width: 170px;
+}
+
+.parking-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: 2px;
+}
+
+.parking-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.parking-results-count {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.parking-floor-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.parking-floor-section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.parking-floor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.parking-floor-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.parking-floor-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.parking-floor-stat {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.parking-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--space-4);
+}
+
+.parking-slot-card {
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+
+.parking-slot-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-hover);
+}
+
+.parking-slot-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.parking-slot-card.status-available {
+  border-left: 4px solid var(--color-accent);
+}
+
+.parking-slot-card.status-occupied {
+  border-left: 4px solid var(--color-danger);
+  opacity: 0.9;
+}
+
+.parking-slot-card.status-reserved {
+  border-left: 4px solid var(--color-warning);
+}
+
+.parking-slot-card.status-maintenance {
+  border-left: 4px solid var(--color-border-hover);
+  opacity: 0.75;
+}
+
+.parking-slot-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.parking-slot-number {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.2px;
+}
+
+.parking-slot-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.parking-slot-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.parking-slot-meta-label {
+  font-weight: 500;
+}
+
+.parking-slot-meta-value {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.parking-slot-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+  gap: var(--space-2);
+}
+
+.parking-slot-features {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.parking-feature-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.parking-feature-chip.ev {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.parking-feature-chip.accessible {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.parking-slot-action-hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 
@@ -2755,10 +3187,36 @@ h2 {
   .quick-actions-grid {
     grid-template-columns: 1fr;
   }
+
+  .mall-details-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Mobile & Small Tablet (max-width: 768px) */
 @media (max-width: 768px) {
+  .malls-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .malls-filter-actions {
+    justify-content: flex-end;
+  }
+
+  .mall-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mall-card-actions .button {
+    width: 100%;
+  }
+
+  .mall-info-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
   .dashboard-summary-grid {
     grid-template-columns: 1fr;
   }
@@ -2865,6 +3323,25 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .parking-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .parking-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .parking-filter-input-group,
+  .parking-filter-select-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .parking-slots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
   .footer {
     grid-template-columns: 1fr;
     gap: var(--space-6);
@@ -2896,6 +3373,14 @@ h2 {
 
   .dashboard-header-actions .dashboard-status-indicator {
     display: none;
+  }
+
+  .parking-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .parking-slots-grid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -58,6 +58,13 @@ export default function Navbar() {
             Home
           </NavLink>
           <NavLink
+            to="/malls"
+            onClick={closeMobileMenu}
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Malls
+          </NavLink>
+          <NavLink
             to="/dashboard"
             onClick={closeMobileMenu}
             className={({ isActive }) => (isActive ? "active" : "")}

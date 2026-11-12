@@ -74,6 +74,18 @@ export default function DashboardLayout({ children }) {
             </span>
             <span>Overview</span>
           </NavLink>
+          <NavLink
+            to="/malls"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "sidebar-link-active" : ""}`
+            }
+          >
+            <span className="sidebar-icon" aria-hidden="true">
+              🏢
+            </span>
+            <span>Malls Directory</span>
+          </NavLink>
 
           <div className="sidebar-group-title">Future Modules</div>
           <a

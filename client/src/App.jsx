@@ -5,6 +5,9 @@ import { ROLES } from "./constants/roles.js";
 import PublicLayout from "./layouts/PublicLayout.jsx";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import MallDiscoveryPage from "./pages/MallDiscoveryPage.jsx";
+import MallDetailsPage from "./pages/MallDetailsPage.jsx";
+import ParkingAvailabilityPage from "./pages/ParkingAvailabilityPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
@@ -21,6 +24,10 @@ export default function App() {
         {/* Public layout route tree */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/malls" element={<MallDiscoveryPage />} />
+          <Route path="/malls/:id" element={<MallDetailsPage />} />
+          <Route path="/malls/:id/parking" element={<ParkingAvailabilityPage />} />
+          <Route path="/malls/:id/availability" element={<ParkingAvailabilityPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
