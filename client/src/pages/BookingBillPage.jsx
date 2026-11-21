@@ -15,7 +15,9 @@ export default function BookingBillPage() {
 
   useEffect(() => {
     const controller = new AbortController();
-    getBookingBill(id, { signal: controller.signal }).then(setBill).catch((err) => {
+    getBookingBill(id, { signal: controller.signal }).then((result) => {
+      if (!controller.signal.aborted) { setBill(result); setError(""); }
+    }).catch((err) => {
       if (!controller.signal.aborted) setError(err.data?.error?.code === "BILL_NOT_READY" ? "The final bill is not ready. It becomes available after a verified exit." : err.message);
     }).finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
@@ -27,7 +29,7 @@ export default function BookingBillPage() {
     ["Bay", `${bill.floor || ""} ${bill.slotCode || ""}`],
     ["Entry", `${formatBookingTime(bill.entryTime)} IST`],
     ["Exit", `${formatBookingTime(bill.exitTime)} IST`],
-    ["Duration", bill.durationMinutes != null ? `${bill.durationMinutes} minutes` : null],
+    ["Duration", bill.durationMinutes != null ? `${bill.durationMinutes} minute${bill.durationMinutes === 1 ? "" : "s"}` : null],
     ["Billable hours", bill.billableHours],
     ["Hourly rate", bill.hourlyRateSnapshotPaise != null ? formatRupees(bill.hourlyRateSnapshotPaise / 100) : null],
     ["Policy version", bill.policyVersion],

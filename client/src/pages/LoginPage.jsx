@@ -8,6 +8,7 @@ import ErrorMessage from "../components/ErrorMessage.jsx";
 import Badge from "../components/Badge.jsx";
 import { validateLoginForm } from "../utils/validation.js";
 import useAuth from "../hooks/useAuth.js";
+import { authDestination } from "../utils/authDestination.js";
 
 /**
  * LoginPage: Complete authentication login UI with client-side validation,
@@ -16,7 +17,7 @@ import useAuth from "../hooks/useAuth.js";
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated, error: sessionError } = useAuth();
+  const { login, user, isAuthenticated, error: sessionError } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -32,13 +33,9 @@ export default function LoginPage() {
   // If already authenticated, redirect to target or dashboard
   useEffect(() => {
     if (isAuthenticated) {
-      const from = location.state?.from;
-      const destination = from
-        ? `${from.pathname}${from.search || ""}${from.hash || ""}`
-        : "/dashboard";
-      navigate(destination, { replace: true });
+      navigate(authDestination(user, location.state?.from), { replace: true });
     }
-  }, [isAuthenticated, location.state, navigate]);
+  }, [isAuthenticated, user, location.state, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -74,11 +71,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await login({ email: formData.email, password: formData.password });
-      const from = location.state?.from;
-      const destination = from
-        ? `${from.pathname}${from.search || ""}${from.hash || ""}`
-        : "/dashboard";
-      navigate(destination, { replace: true });
+
     } catch (err) {
       if (err.status === 404) {
         setStatusMessage({

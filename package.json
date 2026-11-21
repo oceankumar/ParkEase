@@ -15,6 +15,7 @@
     "server": "npm run dev --workspace server",
     "install-all": "npm install",
     "build": "npm run build --workspace client",
+    "start": "npm start --workspace server",
     "lint": "eslint client server",
     "test": "npm test --workspace server",
     "test:client": "node client/test/run-tests.mjs"

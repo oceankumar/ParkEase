@@ -412,3 +412,26 @@ textarea { resize: vertical; }
   .dashboard-body, .dashboard-main, .receipt-page { margin: 0 !important; padding: 0 !important; width: 100% !important; }
   .receipt-page .card { box-shadow: none; border: 0; break-inside: avoid; }
 }
+
+/* Driver credentials and verified gate operations. */
+.gate-pass { display: grid; gap: 18px; max-width: 480px; }
+.gate-pass-heading, .gate-action-switch { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gate-pass-heading { justify-content: space-between; }
+.gate-status { background: #d5f568; color: #142536; padding: 7px 12px; border-radius: 8px; font-size: .8rem; font-weight: 800; letter-spacing: .08em; }
+.gate-pass-qr { display: block; width: min(100%, 300px); height: auto; border-radius: 12px; background: white; }
+.gate-help { color: var(--text-muted, #57666b); font-size: .85rem; line-height: 1.6; }
+.manual-credential { border: 1px solid #dbe1dc; border-radius: 12px; padding: 14px; }
+.manual-credential summary, .table-scroll summary { cursor: pointer; font-weight: 600; }
+.manual-credential code { display: block; overflow-wrap: anywhere; margin: 16px 0; user-select: all; }
+.gate-action-switch { margin-bottom: 22px; }
+.pass-scanner { display: grid; gap: 14px; margin-top: 20px; max-width: 520px; }
+.pass-scanner video { width: 100%; min-height: 180px; background: #142536; border-radius: 12px; }
+.gate-result { background: #eff8d6; color: #142536; padding: 20px; border-radius: 12px; margin-top: 18px; }
+.table-scroll td { vertical-align: top; }
+.table-scroll .detail-list dd { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .parking-availability-layout .parking-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .parking-availability-layout .stat-card { padding: 14px; min-height: 100px; }
+  .parking-availability-layout .stat-card-value { font-size: 1.8rem; }
+  .bay-floor .floor-rows::after { content: 'Swipe sideways to explore this floor →'; color: #d5f568; font-size: .75rem; position: sticky; left: 0; }
+}

@@ -3,14 +3,16 @@ import app from "./app.js";
 import connectDB from "./config/db.js";
 import mongoose from "mongoose";
 import { startExpiryWorker, stopExpiryWorker } from "./services/expiryService.js";
+import { validateRuntime } from "./config/runtime.js";
 
 async function startServer() {
   try {
+    validateRuntime();
     await connectDB();
     const port = Number(process.env.PORT || 5000);
     if (!Number.isInteger(port) || port < 1 || port > 65535)
       throw new Error("PORT must be an integer from 1 to 65535.");
-    const server = app.listen(port);
+    const server = app.listen(port, "0.0.0.0");
     startExpiryWorker();
     let shutdownPromise;
     const shutdown = () => {

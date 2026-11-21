@@ -51,7 +51,7 @@ export function normalizeBookingsResponse(response) {
     enteredAt: item.entryTime || null,
     exitedAt: item.exitTime || null,
     billAvailable: item.billAvailable === true,
-    qrEligibility: item.qrEligibility || null,
+    qrEligiblePurposes: Array.isArray(item.qrEligiblePurposes) ? item.qrEligiblePurposes.filter((purpose) => ["ENTRY", "EXIT"].includes(purpose)) : [],
     vehicleType: item.vehicleType || null,
   }));
 
@@ -106,8 +106,9 @@ const bookingService = {
 
 export default bookingService;
 
-export async function createBooking(body) {
-  const { data } = await sessionRequest("/bookings", { method: "POST", body });
+export async function createBooking(body, idempotencyKey) {
+  const { data } = await sessionRequest("/bookings", { method: "POST", body,
+    headers: idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {} });
   return normalizeBookingsResponse([data.booking]).bookings[0];
 }
 

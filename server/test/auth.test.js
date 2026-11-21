@@ -298,7 +298,9 @@ test("auth lifecycle on MongoDB", { skip: !process.env.AUTH_TEST_MONGODB_URI && 
       assert.equal((await book(`${booking._id}/cancel`, "PATCH")).status, 200);
       assert.equal((await book(`${booking._id}/cancel`, "PATCH")).status, 200);
       assert.equal((await (await publicRead(timeLookup)).json()).data.slots[0].status, "AVAILABLE");
+      assert.equal((await (await publicRead(`${mall._id}/slots?view=reservations`)).json()).data.slots[0].status, "RESERVED", "The adjacent booking still holds the bay in the overview");
       assert.equal((await book(`${adjacentId}/cancel`, "PATCH")).status, 200);
+      assert.equal((await (await publicRead(`${mall._id}/slots?view=reservations`)).json()).data.slots[0].status, "AVAILABLE", "Cancelling all reservations releases the overview bay");
 
       const rejectedMall = await mallRequest("", ownerData.accessToken, { ...mallDetails, name: "Other Mall" });
       const rejectedId = (await rejectedMall.json()).data.mall._id;

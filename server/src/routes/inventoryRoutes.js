@@ -148,14 +148,20 @@ router.patch("/:mallId/inventory/bays/:bayId", ...owner, async (req, res) => {
 });
 
 router.get("/:mallId/slots", async (req, res) => {
+  res.set("Cache-Control", "no-store");
   const id = validateObjectId(req.params.mallId, "mallId");
   const mall = await Mall.findOne({ _id: id, status: "APPROVED" }).select("openingTime closingTime hourlyRatePaise +parkingPublished").lean();
   if (!mall) throw new AppError(404, "Mall not found", "MALL_NOT_FOUND");
-  const window = req.query.startTime !== undefined || req.query.endTime !== undefined ? bookingWindow(req.query) : null;
+  if (req.query.view !== undefined && req.query.view !== "reservations") invalid("Unknown availability view.");
+  const window = req.query.startTime !== undefined || req.query.endTime !== undefined
+    ? bookingWindow(req.query, Date.now(), { allowStarted: true }) : null;
   if (window) checkOperatingHours(mall, window);
   const now = new Date();
   const occupied = new Set(await Booking.distinct("bayId", { mallId: id, status: "ACTIVE" }));
-  const reserved = new Set(await Booking.distinct("bayId", overlappingBookings(id, window ?? { startTime: now, endTime: now })));
+  const reservationOverview = !window && req.query.view === "reservations";
+  const reserved = new Set(await Booking.distinct("bayId", reservationOverview
+    ? { mallId: id, ...liveConfirmedBookings(now) }
+    : overlappingBookings(id, window ?? { startTime: now, endTime: now }, now)));
   const floors = mall.parkingPublished?.floors ?? [];
   const slots = floors.flatMap((floor) => floor.rows.flat().filter(Boolean).map((bay) => ({
     id: bay.id,
@@ -167,7 +173,7 @@ router.get("/:mallId/slots", async (req, res) => {
     isAccessible: bay.accessible,
     hourlyRate: mall.hourlyRatePaise / 100,
   })));
-  respond(res, { slots, layout: floors.map((floor) => ({
+  respond(res, { slots, availabilityScope: window ? "WINDOW" : reservationOverview ? "RESERVATIONS" : "NOW", generatedAt: now, layout: floors.map((floor) => ({
     name: floor.name,
     rows: floor.rows.map((row) => row.map((bay) => bay?.id ?? null)),
   })) });

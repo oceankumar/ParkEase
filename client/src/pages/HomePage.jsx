@@ -15,14 +15,14 @@ export default function HomePage() {
       </div>
       <div className="hero-map"><div className="hero-map-label"><span className="count-chip">P</span><div><strong>A better way to arrive</strong><span>Designed around your next visit</span></div></div><ParkingPreview /><div className="hero-map-foot"><Icon name="pin" /><span>Find your place. Enjoy your day.</span><Icon name="arrow" /></div></div>
     </section>
-    <section className="container journey-band" aria-label="The ParkEase journey"><div><span>01</span><strong>Discover your destination</strong><p>Browse approved malls and parking rates.</p></div><div><span>02</span><strong>Plan your arrival</strong><p>Check the location and opening hours.</p></div><div><span>03</span><strong>More to come</strong><p>Bay reservations and QR entry are on the way.</p></div></section>
+    <section className="container journey-band" aria-label="The ParkEase journey"><div><span>01</span><strong>Discover your destination</strong><p>Browse approved malls and parking rates.</p></div><div><span>02</span><strong>Plan your arrival</strong><p>Check the location and opening hours.</p></div><div><span>03</span><strong>Arrive with your pass</strong><p>Reserve a bay, show your QR at entry, and view your bill after exit.</p></div></section>
     <section className="container features">
       <div className="section-heading"><div><span className="eyebrow">ONE PLATFORM. EVERY PERSPECTIVE.</span><h2>Good parking starts with connection.</h2></div><p>For the people arriving.<br />And the people making it happen.</p></div>
       <div className="feature-grid">
         <FeatureCard number="01" title="Find your next stop" badge="For drivers" icon={<Icon name="pin" />}>Explore approved malls, compare parking rates, and check opening hours before you leave.</FeatureCard>
         <FeatureCard number="02" title="Put your mall on the map" badge="For owners" icon={<Icon name="building" />}>Submit your mall and manage its listing from a dedicated workspace.</FeatureCard>
         <FeatureCard number="03" title="Keep standards high" badge="For admins" icon={<Icon name="shield" />}>Review mall applications and owner accounts in one connected portal.</FeatureCard>
-        <FeatureCard number="04" title="From bay to barrier" badge="Coming next" icon={<Icon name="car" />}>Parking inventory, reservations, and QR entry will complete the journey.</FeatureCard>
+        <FeatureCard number="04" title="From bay to barrier" badge="Connected visits" icon={<Icon name="car" />}>Reserve your bay, check in with a QR pass, and see your final bill after a verified exit.</FeatureCard>
       </div>
     </section>
   </>;

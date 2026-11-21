@@ -29,6 +29,10 @@ export default function ProtectedRoute({
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
+  if (user?.mustChangePassword && location.pathname !== "/dashboard/profile") {
+    return <Navigate to="/dashboard/profile" replace />;
+  }
+
   if (
     Array.isArray(allowedRoles) &&
     allowedRoles.length > 0 &&

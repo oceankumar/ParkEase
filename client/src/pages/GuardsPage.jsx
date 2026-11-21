@@ -6,6 +6,10 @@ import { assignGuard, createGuard, listMallGuards, updateAssignment } from "../s
 import PageHeader from "../components/PageHeader.jsx";
 import Card from "../components/Card.jsx";
 import Button from "../components/Button.jsx";
+import Input from "../components/Input.jsx";
+import Select from "../components/Select.jsx";
+import Badge from "../components/Badge.jsx";
+import Icon from "../components/Icon.jsx";
 
 export default function GuardsPage() {
   const { user } = useAuth();
@@ -43,12 +47,14 @@ export default function GuardsPage() {
 
   async function submit(event, mode) {
     event.preventDefault();
+    const form = event.currentTarget;
+    if (busy) return;
     setBusy(true); setError(""); setNotice("");
-    const fields = Object.fromEntries(new FormData(event.currentTarget));
+    const fields = Object.fromEntries(new FormData(form));
     try {
       if (mode === "create") await createGuard(mallId, fields);
       else await assignGuard(mallId, fields);
-      event.currentTarget.reset();
+      form.reset();
       setNotice(mode === "create" ? "Guard created. Share the temporary password securely; it will not be shown again." : "Guard assigned.");
       await refresh();
     } catch (err) { setError(err.message); }
@@ -63,27 +69,28 @@ export default function GuardsPage() {
   }
 
   return <div className="dashboard-content-grid">
-    <PageHeader title="Guards" description="Manage guards for an approved mall." />
+    <PageHeader eyebrow="YOUR GATE TEAM" title="A smoother shift starts here." description="Create guard accounts and manage access to your approved malls." />
     {error && <p className="form-error-text" role="alert">{error} <Button onClick={refresh}>Retry</Button></p>}
-    {notice && <p role="status">{notice}</p>}
-    <label>Selected mall <select value={mallId} onChange={(event) => { setMallId(event.target.value); setGuards([]); }}>
-      <option value="">Choose a mall</option>{malls.map((mall) => <option key={mall._id || mall.id} value={mall._id || mall.id}>{mall.name}</option>)}
-    </select></label>
+    {notice && <div className="notice-success" role="status"><Icon name="check" size={18} />{notice}</div>}
+    <Card title="Choose a location" subtitle="Guard assignments are managed separately for each mall."><Select label="Selected mall" value={mallId} disabled={busy} onChange={(event) => { setMallId(event.target.value); setGuards([]); setError(""); setNotice(""); }} options={[{ value: "", label: "Choose a mall" }, ...malls.map((mall) => ({ value: mall._id || mall.id, label: mall.name }))]} /></Card>
     {mallId && <>
-      <Card title="Assigned guards">{guards.length === 0 ? <p>No guards assigned.</p> : guards.map(({ user: guard, assignment }) => <div key={assignment.id} className="section-title-row">
-        <span>{guard?.name} ({guard?.email}) · {assignment.gateLabel || "Gate not labeled"} · {assignment.isActive ? "Active" : "Inactive"}</span>
-        <Button disabled={busy} onClick={() => toggle(assignment)}>{assignment.isActive ? "Deactivate" : "Activate"}</Button>
-      </div>)}</Card>
-      <Card title="Create guard"><form onSubmit={(event) => submit(event, "create")} className="auth-form">
-        <label>Full name<input name="name" required /></label><label>Email<input name="email" type="email" required /></label>
-        <label>Phone<input name="phone" /></label><label>Temporary password<input name="initialPassword" type="password" required autoComplete="new-password" /></label>
-        <label>Gate label<input name="gateLabel" /></label><p>Give the password directly to the guard through a secure channel.</p>
-        <Button type="submit" disabled={busy}>Create guard</Button>
+      <Card title="Your assigned guards" subtitle={`${guards.length} ${guards.length === 1 ? "assignment" : "assignments"} at this location.`}>{guards.length === 0 ? <div className="portal-empty"><Icon name="users" size={28} /><p>No guards assigned yet. Create an account or assign an existing guard below.</p></div> : <div className="guard-roster">{guards.map(({ user: guard, assignment }) => <div key={assignment.id} className="guard-roster-row">
+        <span className="profile-avatar">{guard?.name?.slice(0, 1) || "G"}</span><div className="guard-roster-identity"><strong>{guard?.name}</strong><span>{guard?.email}</span><small>{assignment.gateLabel || "Gate not labeled"}</small></div><Badge variant={assignment.isActive ? "success" : "neutral"}>{assignment.isActive ? "Active" : "Inactive"}</Badge>
+        <Button size="sm" variant="outline" disabled={busy} onClick={() => toggle(assignment)}>{assignment.isActive ? "Deactivate" : "Activate"}</Button>
+      </div>)}</div>}</Card>
+      <div className="portal-two-panel">
+      <Card title="Create a guard account" subtitle="A new team member, ready for their first shift."><form onSubmit={(event) => submit(event, "create")} className="portal-form">
+        <Input label="Full name" name="name" required minLength={2} maxLength={100} disabled={busy} /><Input label="Email" name="email" type="email" required disabled={busy} />
+        <div className="form-two-columns"><Input label="Phone" name="phone" type="tel" maxLength={20} disabled={busy} /><Input label="Gate label" name="gateLabel" placeholder="e.g. North entrance" maxLength={80} disabled={busy} /></div>
+        <Input label="Temporary password" name="initialPassword" type="password" required minLength={8} autoComplete="new-password" disabled={busy} helperText="The guard must change this password before their first gate operation." />
+        <div className="portal-form-footer"><p>Share the temporary password directly with the guard through a secure channel.</p><Button type="submit" disabled={busy}>Create guard</Button></div>
       </form></Card>
-      <Card title="Assign existing guard"><form onSubmit={(event) => submit(event, "assign")} className="auth-form">
-        <label>Guard ID<input name="guardId" required /></label><label>Gate label<input name="gateLabel" /></label>
-        <Button type="submit" disabled={busy}>Assign guard</Button>
+      <Card title="Assign an existing guard" subtitle="Give a guard access to another location."><form onSubmit={(event) => submit(event, "assign")} className="portal-form">
+        <Input label="Guard ID" name="guardId" required disabled={busy} helperText="Use the account ID of a guard you manage." /><Input label="Gate label" name="gateLabel" placeholder="e.g. Basement exit" maxLength={80} disabled={busy} />
+        <div className="portal-callout"><Icon name="shield" size={20} /><p>An active assignment lets this guard verify passes and record entries and exits at this mall.</p></div>
+        <div className="portal-form-footer"><Button type="submit" disabled={busy}>Assign guard</Button></div>
       </form></Card>
+      </div>
     </>}
   </div>;
 }

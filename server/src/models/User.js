@@ -77,6 +77,7 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     mustChangePassword: { type: Boolean, default: false },
+    sessionVersion: { type: Number, default: 0 },
     gateRevision: { type: Number, default: 0, select: false },
     visitRevision: { type: Number, default: 0, select: false },
   },

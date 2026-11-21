@@ -417,5 +417,5 @@ test("MallDetailsPage: includes navigation link to Parking Availability interfac
   assert.match(html, /View Parking Availability/);
   assert.match(html, /\/malls\/phoenix-kurla\/parking/);
 
-  assert.match(html, /Online booking and QR entry are not available yet/);
+  assert.match(html, /QR pass for verified entry and exit/);
 });

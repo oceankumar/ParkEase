@@ -4,6 +4,7 @@ import { sessionRequest } from "../services/authService.js";
 import PageHeader from "../components/PageHeader.jsx";
 import Card from "../components/Card.jsx";
 import Button from "../components/Button.jsx";
+import Input from "../components/Input.jsx";
 
 export default function EditMallPage() {
   const { id } = useParams();
@@ -42,17 +43,14 @@ export default function EditMallPage() {
   return <div className="dashboard-content-grid">
     <PageHeader title="Edit mall listing" description="Changes to the mall name or address may require another approval." />
     {error && <p role="alert" className="form-error-text">{error}</p>}
-    {notice && <p role="status">{notice}</p>}
+    {notice && <div className="notice-success" role="status">{notice}</div>}
     {!mall && !error && <p role="status">Loading mall…</p>}
-    {mall && <Card title={mall.name}><form key={mall._id} onSubmit={save} className="owner-mall-form">
-      <label>Mall name<input name="name" required defaultValue={mall.name} /></label>
-      <label>City<input name="city" required defaultValue={mall.city} /></label>
-      <label>Address<input name="address" required defaultValue={mall.address} /></label>
-      <label>Description<input name="description" defaultValue={mall.description || ""} /></label>
-      <label>Opens (IST)<input name="openingTime" type="time" required defaultValue={mall.openingTime} /></label>
-      <label>Closes (IST)<input name="closingTime" type="time" required defaultValue={mall.closingTime} /></label>
-      <label>Hourly rate (₹)<input name="rate" type="number" min="0" max="10000" step="0.01" required defaultValue={mall.hourlyRatePaise / 100} /></label>
-      <Button type="submit" disabled={busy}>{busy ? "Saving…" : "Save changes"}</Button>
+    {mall && <Card title={mall.name} subtitle="Keep your location, opening hours, and parking rate accurate."><form key={mall._id} onSubmit={save} className="portal-form">
+      <div className="form-two-columns"><Input label="Mall name" name="name" required defaultValue={mall.name} disabled={busy} /><Input label="City" name="city" required defaultValue={mall.city} disabled={busy} /></div>
+      <Input label="Address" name="address" required defaultValue={mall.address} disabled={busy} />
+      <Input label="Description" name="description" defaultValue={mall.description || ""} disabled={busy} />
+      <div className="portal-three-columns"><Input label="Opens (IST)" name="openingTime" type="time" required defaultValue={mall.openingTime} disabled={busy} /><Input label="Closes (IST)" name="closingTime" type="time" required defaultValue={mall.closingTime} disabled={busy} /><Input label="Hourly rate (₹)" name="rate" type="number" min="0" max="10000" step="0.01" required defaultValue={mall.hourlyRatePaise / 100} disabled={busy} /></div>
+      <div className="portal-form-footer"><p>New rates apply to future reservations.</p><Button type="submit" loading={busy}>Save changes</Button></div>
     </form></Card>}
     <Link to="/dashboard?view=my-malls">Back to My malls</Link>
   </div>;

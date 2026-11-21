@@ -1,4 +1,4 @@
-import { useEffect, useId } from "react";
+import { useEffect, useEffectEvent, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 
 /**
@@ -22,14 +22,34 @@ export default function Modal({
   const generatedId = useId();
   const titleId = `modal-title-${generatedId}`;
   const descId = `modal-desc-${generatedId}`;
+  const dialog = useRef(null);
+  const dismiss = useEffectEvent(() => { if (closeOnEscape) onClose?.(); });
 
   useEffect(() => {
     if (!isOpen) return;
+    const trigger = document.activeElement;
+    const siblings = [...document.body.children].filter((node) => !node.contains(dialog.current));
+    const previousInert = siblings.map((node) => [node, node.inert]);
+    for (const [node] of previousInert) node.inert = true;
+    const focusable = () => [...dialog.current.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex="0"]')]
+      .filter((node) => node.getClientRects().length);
+    (focusable()[0] || dialog.current).focus();
 
     const handleKeyDown = (e) => {
-      if (closeOnEscape && e.key === "Escape") {
+      if (e.key === "Escape") {
         e.stopPropagation();
-        onClose?.();
+        dismiss();
+      }
+      if (e.key === "Tab") {
+        const list = focusable();
+        const first = list[0];
+        const last = list.at(-1);
+        if (!first) { e.preventDefault(); dialog.current.focus(); }
+        else if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || document.activeElement === dialog.current)) {
+          e.preventDefault(); first.focus();
+        }
       }
     };
 
@@ -40,8 +60,10 @@ export default function Modal({
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      for (const [node, inert] of previousInert) node.inert = inert;
+      if (trigger?.isConnected) trigger.focus();
     };
-  }, [isOpen, closeOnEscape, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -50,10 +72,11 @@ export default function Modal({
     <div
       className="modal-backdrop"
       onClick={closeOnBackdrop ? () => onClose?.() : undefined}
-      aria-hidden="true"
     >
       <div
         role="dialog"
+        ref={dialog}
+        tabIndex={-1}
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descId : undefined}

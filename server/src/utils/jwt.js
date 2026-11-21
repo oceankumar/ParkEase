@@ -79,6 +79,7 @@ export function signAccessToken(user) {
     {
       role: user.role,
       status: user.status,
+      sessionVersion: user.sessionVersion ?? 0,
     },
     secret,
     {

@@ -13,7 +13,7 @@ import { liveConfirmedBookings } from "../utils/bookingWindow.js";
 const router = Router();
 router.use(authenticate, requireActiveAccount, (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 const keys = ["totalBays", "availableNow", "reservedNow", "occupiedNow", "maintenanceNow",
-  "upcomingBookings", "activeVisits", "completedVisits", "expiredBookings", "cancelledBookings", "billedAmountPaise"];
+  "unreservedBays", "reservedBays", "upcomingBookings", "activeVisits", "completedVisits", "expiredBookings", "cancelledBookings", "billedAmountPaise"];
 const zero = () => Object.fromEntries(keys.map((key) => [key, 0]));
 
 
@@ -41,6 +41,7 @@ async function overview(mallFilter, query) {
         upcomingBookings: { $sum: { $cond: ["$upcoming", 1, 0] } },
         activeBayIds: { $addToSet: { $cond: [{ $eq: ["$status", "ACTIVE"] }, "$bayId", null] } },
         reservedBayIds: { $addToSet: { $cond: ["$reserved", "$bayId", null] } },
+        allReservedBayIds: { $addToSet: { $cond: [{ $eq: ["$status", "CONFIRMED"] }, "$bayId", null] } },
       } },
     ]);
     const currentByMall = new Map(currentRows.map((row) => [String(row._id), row]));
@@ -53,6 +54,7 @@ async function overview(mallFilter, query) {
       metrics.upcomingBookings = current?.upcomingBookings ?? 0;
       const active = new Set(current?.activeBayIds ?? []);
       const reserved = new Set(current?.reservedBayIds ?? []);
+      const allReserved = new Set(current?.allReservedBayIds ?? []);
       for (const floor of mall.parkingPublished?.floors ?? []) for (const row of floor.rows) for (const bay of row) {
         if (!bay) continue;
         metrics.totalBays++;
@@ -60,6 +62,10 @@ async function overview(mallFilter, query) {
         else if (bay.status === "MAINTENANCE") metrics.maintenanceNow++;
         else if (reserved.has(bay.id)) metrics.reservedNow++;
         else metrics.availableNow++;
+        if (!active.has(bay.id) && bay.status !== "MAINTENANCE") {
+          if (allReserved.has(bay.id)) metrics.reservedBays++;
+          else metrics.unreservedBays++;
+        }
       }
       byMall.set(String(mall._id), { mallId: mall._id, mallName: mall.name, metrics });
     }

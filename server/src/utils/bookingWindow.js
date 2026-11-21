@@ -12,12 +12,12 @@ function parseDate(value) {
   return Number.isFinite(parsed.getTime()) && parsed.toISOString() === value ? parsed : null;
 }
 
-export function bookingWindow(input, now = Date.now()) {
+export function bookingWindow(input, now = Date.now(), { allowStarted = false } = {}) {
   const startTime = parseDate(input?.startTime);
   const endTime = parseDate(input?.endTime);
   const duration = (endTime - startTime) / minute;
   if (!startTime || !endTime || duration < 30 || duration > 480 || duration % 30 !== 0 ||
-      startTime.getTime() % minute !== 0 || startTime < now || startTime > now + 90 * day) {
+      startTime.getTime() % minute !== 0 || (allowStarted ? endTime <= now : startTime < now) || startTime > now + 90 * day) {
     throw new AppError(400, "Choose a future start within 90 days and a duration of 30 minutes to 8 hours.", "INVALID_BOOKING_WINDOW");
   }
   return { startTime, endTime };

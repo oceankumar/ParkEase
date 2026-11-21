@@ -4,7 +4,7 @@ import * as auth from "../services/authService.js";
 import AppError from "../utils/AppError.js";
 import { clearRefreshCookie, parseCookies, REFRESH_COOKIE_NAME, setRefreshCookie } from "../utils/cookies.js";
 
-export const clientOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+export const clientOrigin = (process.env.CLIENT_URL || process.env.RENDER_EXTERNAL_URL || "http://localhost:5173").replace(/\/$/, "");
 const router = Router();
 const windowMs = 60_000;
 

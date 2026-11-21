@@ -66,6 +66,7 @@ test("backend reservation and gate scenario on isolated replica set", { skip }, 
   assert.equal(provision.status, 201, JSON.stringify(provision.body));
   assert.equal(provision.body.data.guard.passwordHash, undefined);
   const guard = await User.findById(provision.body.data.guard._id);
+  const oldGuardToken = signAccessToken(guard);
   const beforeChange = await api("/qr/verify", guard, "POST", { mallId: mall.id, token: "a".repeat(64), action: "ENTRY" });
   assert.equal(beforeChange.status, 403);
   const changed = await api("/users/password", guard, "PATCH", {
@@ -73,6 +74,9 @@ test("backend reservation and gate scenario on isolated replica set", { skip }, 
   assert.equal(changed.status, 200, JSON.stringify(changed.body));
   const activeGuard = await User.findById(guard._id);
   assert.equal(activeGuard.mustChangePassword, false);
+  assert.equal((await api("/users/profile", null, "GET", undefined,
+    { Authorization: `Bearer ${oldGuardToken}` })).status, 401, "Password change invalidates already-issued access tokens");
+  assert.equal((await api("/users/profile", activeGuard)).status, 200);
   assert.equal((await api(`/malls/${mall.id}/guard-assignments`, wrongOwner, "POST", { guardId: guard.id })).status, 404);
   const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
   const future = { mallId: mall.id, bayId, vehicleNumber: "DL01AB1234", vehicleType: "CAR",
@@ -89,6 +93,20 @@ test("backend reservation and gate scenario on isolated replica set", { skip }, 
   const adjacent = await api("/bookings", otherDriver, "POST", { ...future,
     startTime: future.endTime, endTime: new Date(`${tomorrow}T14:00:00+05:30`).toISOString() });
   assert.equal(adjacent.status, 201);
+  const overviewSlots = await api(`/malls/${mall.id}/slots?view=reservations`, null);
+  assert.equal(overviewSlots.body.data.slots[0].status, "RESERVED", "Future reservations must be visible in the overview");
+  assert.equal(overviewSlots.body.data.availabilityScope, "RESERVATIONS");
+  const bookedWindow = new URLSearchParams({ startTime: future.startTime, endTime: future.endTime });
+  assert.equal((await api(`/malls/${mall.id}/slots?${bookedWindow}`, null)).body.data.slots[0].status, "RESERVED");
+  const laterWindow = new URLSearchParams({ startTime: adjacent.body.data.booking.endTime,
+    endTime: new Date(new Date(adjacent.body.data.booking.endTime).getTime() + 3600000).toISOString() });
+  assert.equal((await api(`/malls/${mall.id}/slots?${laterWindow}`, null)).body.data.slots[0].status, "AVAILABLE", "A non-overlapping visit can still use the same bay");
+  for (const [role, path] of [[owner, "/analytics/owner/overview"], [admin, "/analytics/admin/overview"]]) {
+    const metrics = (await api(path, role)).body.data.metrics;
+    assert.equal(metrics.availableNow, 1, "A future booking does not occupy a bay right now");
+    assert.equal(metrics.unreservedBays, 0);
+    assert.equal(metrics.reservedBays, 1, "Adjacent reservations on one bay count as one reserved bay");
+  }
   const invalidHours = await api(`/malls/${mall.id}`, owner, "PATCH", { openingTime: "13:00" });
   assert.equal(invalidHours.status, 409, JSON.stringify(invalidHours.body));
   assert.equal(invalidHours.body.error.code, "MALL_SCHEDULE_CONFLICT");
@@ -104,6 +122,8 @@ test("backend reservation and gate scenario on isolated replica set", { skip }, 
   const currentMetrics = (await api("/analytics/owner/overview", owner)).body.data.metrics;
   assert.equal(currentMetrics.upcomingBookings, 52);
   assert.equal(currentMetrics.totalBays, 1);
+  assert.equal(currentMetrics.reservedBays, 1, "Reservations for removed bay IDs must not inflate bay totals");
+  assert.equal(currentMetrics.unreservedBays, 0);
   const now = Date.now();
   const booking = await Booking.create({ driverId: driver._id, mallId: mall._id, mallName: mall.name,
     bayId, slotCode: "A01", floor: "B1", vehicleType: "CAR", vehicleNumber: "DL01AB1234",

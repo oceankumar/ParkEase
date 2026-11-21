@@ -12,7 +12,8 @@ export function getApiBaseUrl() {
         ? globalThis.process.env.VITE_API_URL
         : undefined;
 
-  return (envUrl || "http://localhost:5001/api").replace(/\/$/, "");
+  const production = typeof import.meta !== "undefined" && import.meta.env?.PROD;
+  return (envUrl || (production ? "/api" : "http://localhost:5001/api")).replace(/\/$/, "");
 }
 
 /**

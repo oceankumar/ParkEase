@@ -46,6 +46,7 @@ router.patch("/password", accountRateLimit(5), async (req, res) => {
       throw new AppError(400, "Choose a different password", "INVALID_PASSWORD");
     user.passwordHash = passwordHash;
     user.mustChangePassword = false;
+    user.sessionVersion = (user.sessionVersion ?? 0) + 1;
     user.gateRevision = (user.gateRevision ?? 0) + 1;
     await user.save({ session });
     await RefreshToken.updateMany({ userId: user._id, revokedAt: null },

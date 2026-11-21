@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const testEntries = [
+  { name: "Gate and pass interactions", file: path.join(__dirname, "gateFlow.test.js") },
   { name: "UI Components", file: path.join(__dirname, "components.test.js") },
   { name: "API Client & Services", file: path.join(__dirname, "apiClient.test.js") },
   { name: "Auth Forms & Validation", file: path.join(__dirname, "authForms.test.js") },
@@ -36,6 +37,11 @@ for (const { name, file } of testEntries) {
         "react",
         "react-dom",
         "react-router-dom",
+        "jsdom",
+        "@testing-library/react",
+        "qrcode",
+        "@zxing/browser",
+        "./setupDom.js",
       ],
     });
 

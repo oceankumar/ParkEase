@@ -47,10 +47,14 @@ export default function DashboardLayout({ children }) {
     );
   }
   if (user) links.push({ label: "Profile", icon: "users", to: "/dashboard/profile", active: location.pathname === "/dashboard/profile" });
+  if (user?.role === "ADMIN" || user?.role === "MALL_OWNER" && user.status === "ACTIVE") {
+    links.splice(links.length - 1, 0,
+      { label: "Reservations", icon: "clipboard", to: "/dashboard/reservations", active: location.pathname === "/dashboard/reservations" },
+      { label: "Gate activity", icon: "home", to: "/dashboard/gate-activity", active: location.pathname === "/dashboard/gate-activity" });
+  }
   if (user?.role !== "USER" && user?.role !== "GUARD") {
     links.push({ label: "Public directory", icon: "pin", to: "/malls", active: location.pathname.startsWith("/malls") });
   }
-  if (!user) links.push({ label: "Find parking", icon: "pin", to: "/malls", active: location.pathname.startsWith("/malls") });
   const currentLabel = location.pathname.includes("/inventory") ? "Parking layout"
     : location.pathname.endsWith("/edit") ? "Edit mall"
       : links.find((link) => link.active)?.label || "Overview";

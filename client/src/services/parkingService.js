@@ -165,11 +165,12 @@ export async function getParkingAvailability(mallId, params = {}, options = {}) 
       : PENDING_PARKING_ROUTES.LIST_SLOTS;
 
     const response = await apiClient.get(endpoint, {
-      params: mallId ? params : { mallId, ...params },
+      params: mallId ? { ...(!params.startTime && !params.endTime ? { view: "reservations" } : {}), ...params } : { mallId, ...params },
+      cache: "no-store",
       ...options,
     });
     const normalized = normalizeParkingResponse(response);
-    return { ...normalized, layout: response?.data?.layout, isPendingBackend: false };
+    return { ...normalized, layout: response?.data?.layout, availabilityScope: response?.data?.availabilityScope, isPendingBackend: false };
   } catch (err) {
     if (err.status === 404) {
       return {
