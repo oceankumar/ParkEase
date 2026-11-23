@@ -1,0 +1,120 @@
+[
+  {
+    "Plan": {
+      "Node Type": "Sort",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Startup Cost": 446.65,
+      "Total Cost": 446.68,
+      "Plan Rows": 12,
+      "Plan Width": 44,
+      "Actual Startup Time": 1.571,
+      "Actual Total Time": 1.571,
+      "Actual Rows": 1,
+      "Actual Loops": 1,
+      "Sort Key": [
+        "(((start_time AT TIME ZONE 'Asia/Kolkata'::text))::date)"
+      ],
+      "Sort Method": "quicksort",
+      "Sort Space Used": 25,
+      "Sort Space Type": "Memory",
+      "Shared Hit Blocks": 183,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0,
+      "Plans": [
+        {
+          "Node Type": "Aggregate",
+          "Strategy": "Hashed",
+          "Partial Mode": "Simple",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 446.23,
+          "Total Cost": 446.44,
+          "Plan Rows": 12,
+          "Plan Width": 44,
+          "Actual Startup Time": 1.571,
+          "Actual Total Time": 1.571,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Group Key": [
+            "((start_time AT TIME ZONE 'Asia/Kolkata'::text))::date"
+          ],
+          "Planned Partitions": 0,
+          "HashAgg Batches": 1,
+          "Peak Memory Usage": 24,
+          "Disk Usage": 0,
+          "Shared Hit Blocks": 183,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Index Only Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Scan Direction": "Forward",
+              "Index Name": "cp4_bookings_confirmed_start_idx",
+              "Relation Name": "bookings",
+              "Alias": "b",
+              "Startup Cost": 0.42,
+              "Total Cost": 397.12,
+              "Plan Rows": 6548,
+              "Plan Width": 12,
+              "Actual Startup Time": 0.002,
+              "Actual Total Time": 1.281,
+              "Actual Rows": 6400,
+              "Actual Loops": 1,
+              "Index Cond": "((start_time >= '2026-11-10 00:00:00+05:30'::timestamp with time zone) AND (start_time < '2026-11-11 00:00:00+05:30'::timestamp with time zone))",
+              "Rows Removed by Index Recheck": 0,
+              "Heap Fetches": 6400,
+              "Shared Hit Blocks": 183,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            }
+          ]
+        }
+      ]
+    },
+    "Settings": {
+      "jit": "off",
+      "plan_cache_mode": "force_custom_plan"
+    },
+    "Planning": {
+      "Shared Hit Blocks": 0,
+      "Shared Read Blocks": 0,
+      "Shared Dirtied Blocks": 0,
+      "Shared Written Blocks": 0,
+      "Local Hit Blocks": 0,
+      "Local Read Blocks": 0,
+      "Local Dirtied Blocks": 0,
+      "Local Written Blocks": 0,
+      "Temp Read Blocks": 0,
+      "Temp Written Blocks": 0
+    },
+    "Planning Time": 0.028,
+    "Triggers": [],
+    "Execution Time": 1.574
+  }
+]

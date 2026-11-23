@@ -1,0 +1,521 @@
+{
+  "postgresql": "PostgreSQL 17.10 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "rows": {
+    "users": 2003,
+    "malls": 40,
+    "parking_floors": 80,
+    "parking_rows": 400,
+    "parking_slots": 8000,
+    "bookings": 96000,
+    "confirmed_bookings": 76800,
+    "guard_assignments": 2,
+    "qr_tokens": 160
+  },
+  "runs": 5,
+  "warmups": 1,
+  "settings": "SET TIME ZONE 'Asia/Kolkata'; SET jit = off; SET plan_cache_mode = force_custom_plan;",
+  "queries": {
+    "Q01": {
+      "execute": "EXECUTE pe_q01('Delhi', 10000);",
+      "before": {
+        "execution_ms": [
+          0.009,
+          0.008,
+          0.007,
+          0.007,
+          0.007
+        ],
+        "median_execution_ms": 0.007,
+        "planning_ms": [
+          0.02,
+          0.016,
+          0.014,
+          0.014,
+          0.013
+        ],
+        "result_rows": 4,
+        "result_sha256": "72fbd88e7a4c871795035890f646507798fec75dee3f20f5ef4bee092c6853df"
+      },
+      "after": {
+        "execution_ms": [
+          0.007,
+          0.009,
+          0.007,
+          0.006,
+          0.005
+        ],
+        "median_execution_ms": 0.007,
+        "planning_ms": [
+          0.025,
+          0.03,
+          0.02,
+          0.016,
+          0.015
+        ],
+        "result_rows": 4,
+        "result_sha256": "72fbd88e7a4c871795035890f646507798fec75dee3f20f5ef4bee092c6853df"
+      }
+    },
+    "Q02": {
+      "execute": "EXECUTE pe_q02('00000000-0000-0000-0000-000000020001', 'CAR',\n              '2026-11-10 10:00+05:30', '2026-11-10 12:00+05:30');",
+      "before": {
+        "execution_ms": [
+          0.39,
+          0.34,
+          0.342,
+          0.332,
+          0.331
+        ],
+        "median_execution_ms": 0.34,
+        "planning_ms": [
+          0.124,
+          0.104,
+          0.137,
+          0.117,
+          0.098
+        ],
+        "result_rows": 40,
+        "result_sha256": "3c93166a0810d755463c054e057ea5000e5a7398c41112b90ba952123671a503"
+      },
+      "after": {
+        "execution_ms": [
+          0.363,
+          0.343,
+          0.341,
+          0.328,
+          0.34
+        ],
+        "median_execution_ms": 0.341,
+        "planning_ms": [
+          0.163,
+          0.126,
+          0.121,
+          0.09,
+          0.124
+        ],
+        "result_rows": 40,
+        "result_sha256": "3c93166a0810d755463c054e057ea5000e5a7398c41112b90ba952123671a503"
+      }
+    },
+    "Q03": {
+      "execute": "EXECUTE pe_q03('00000000-0000-0000-0000-000000010001');",
+      "before": {
+        "execution_ms": [
+          0.047,
+          0.038,
+          0.038,
+          0.041,
+          0.04
+        ],
+        "median_execution_ms": 0.04,
+        "planning_ms": [
+          0.164,
+          0.149,
+          0.137,
+          0.141,
+          0.127
+        ],
+        "result_rows": 20,
+        "result_sha256": "3cead7a22b11c6a240835b6d6b7dd1c53745f6ba943ced4263c83e30ccb1bf28"
+      },
+      "after": {
+        "execution_ms": [
+          0.07,
+          0.051,
+          0.043,
+          0.04,
+          0.038
+        ],
+        "median_execution_ms": 0.043,
+        "planning_ms": [
+          0.444,
+          0.311,
+          0.271,
+          0.192,
+          0.128
+        ],
+        "result_rows": 20,
+        "result_sha256": "3cead7a22b11c6a240835b6d6b7dd1c53745f6ba943ced4263c83e30ccb1bf28"
+      }
+    },
+    "Q04": {
+      "execute": "EXECUTE pe_q04('00000000-0000-0000-0000-000000020001',\n              '2026-11-10 00:00+05:30', '2026-11-11 00:00+05:30');",
+      "before": {
+        "execution_ms": [
+          0.438,
+          0.413,
+          0.406,
+          0.399,
+          0.398
+        ],
+        "median_execution_ms": 0.406,
+        "planning_ms": [
+          0.149,
+          0.126,
+          0.113,
+          0.099,
+          0.103
+        ],
+        "result_rows": 200,
+        "result_sha256": "0a8cbd84e0acbab90fb505edac49630ce3f2ae7a079bd1d308b0146ead82fbab"
+      },
+      "after": {
+        "execution_ms": [
+          0.702,
+          1.433,
+          1.64,
+          0.928,
+          0.53
+        ],
+        "median_execution_ms": 0.928,
+        "planning_ms": [
+          0.161,
+          0.315,
+          0.459,
+          0.238,
+          0.431
+        ],
+        "result_rows": 200,
+        "result_sha256": "0a8cbd84e0acbab90fb505edac49630ce3f2ae7a079bd1d308b0146ead82fbab"
+      }
+    },
+    "Q05": {
+      "execute": "EXECUTE pe_q05;",
+      "before": {
+        "execution_ms": [
+          1.856,
+          1.853,
+          1.831,
+          1.812,
+          1.858
+        ],
+        "median_execution_ms": 1.853,
+        "planning_ms": [
+          0.002,
+          0.001,
+          0.001,
+          0.001,
+          0.001
+        ],
+        "result_rows": 40,
+        "result_sha256": "0ea6876b197ad6eb850d03af2449259c6d26276f14fb2469887d7ba971eb74b5"
+      },
+      "after": {
+        "execution_ms": [
+          2.004,
+          1.801,
+          1.937,
+          2.01,
+          1.867
+        ],
+        "median_execution_ms": 1.937,
+        "planning_ms": [
+          0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.001
+        ],
+        "result_rows": 40,
+        "result_sha256": "0ea6876b197ad6eb850d03af2449259c6d26276f14fb2469887d7ba971eb74b5"
+      }
+    },
+    "Q06": {
+      "execute": "EXECUTE pe_q06('2026-11-10 00:00+05:30', '2026-11-11 00:00+05:30');",
+      "before": {
+        "execution_ms": [
+          5.614,
+          5.583,
+          5.449,
+          5.539,
+          5.277
+        ],
+        "median_execution_ms": 5.539,
+        "planning_ms": [
+          0.042,
+          0.027,
+          0.029,
+          0.051,
+          0.048
+        ],
+        "result_rows": 1,
+        "result_sha256": "fe0af27a2fd1a7e3ba6a74b68e346ac7dcdf7b3dc1e9e7309576688e34da8a58"
+      },
+      "after": {
+        "execution_ms": [
+          1.593,
+          1.552,
+          1.545,
+          1.574,
+          1.859
+        ],
+        "median_execution_ms": 1.574,
+        "planning_ms": [
+          0.103,
+          0.039,
+          0.027,
+          0.028,
+          0.023
+        ],
+        "result_rows": 1,
+        "result_sha256": "fe0af27a2fd1a7e3ba6a74b68e346ac7dcdf7b3dc1e9e7309576688e34da8a58"
+      }
+    },
+    "Q07": {
+      "execute": "EXECUTE pe_q07(40);",
+      "before": {
+        "execution_ms": [
+          15.479,
+          15.771,
+          15.842,
+          15.964,
+          16.0
+        ],
+        "median_execution_ms": 15.842,
+        "planning_ms": [
+          0.106,
+          0.101,
+          0.08,
+          0.072,
+          0.104
+        ],
+        "result_rows": 1200,
+        "result_sha256": "43e09830f032e89d70503fd5643975a696e874e04d891318abe28af3de4b4a6d"
+      },
+      "after": {
+        "execution_ms": [
+          15.789,
+          15.789,
+          15.817,
+          15.744,
+          15.956
+        ],
+        "median_execution_ms": 15.789,
+        "planning_ms": [
+          0.123,
+          0.101,
+          0.1,
+          0.089,
+          0.107
+        ],
+        "result_rows": 1200,
+        "result_sha256": "43e09830f032e89d70503fd5643975a696e874e04d891318abe28af3de4b4a6d"
+      }
+    },
+    "Q08": {
+      "execute": "EXECUTE pe_q08;",
+      "before": {
+        "execution_ms": [
+          0.032,
+          0.026,
+          0.027,
+          0.025,
+          0.025
+        ],
+        "median_execution_ms": 0.026,
+        "planning_ms": [
+          0.002,
+          0.001,
+          0.001,
+          0.001,
+          0.001
+        ],
+        "result_rows": 38,
+        "result_sha256": "5ea33e83959aa7d479cbb54e4ab2321355f757322ff45467de5e7b952cca19f1"
+      },
+      "after": {
+        "execution_ms": [
+          0.037,
+          0.023,
+          0.025,
+          0.023,
+          0.025
+        ],
+        "median_execution_ms": 0.025,
+        "planning_ms": [
+          0.002,
+          0.001,
+          0.001,
+          0.001,
+          0.001
+        ],
+        "result_rows": 38,
+        "result_sha256": "5ea33e83959aa7d479cbb54e4ab2321355f757322ff45467de5e7b952cca19f1"
+      }
+    },
+    "Q09": {
+      "execute": "EXECUTE pe_q09;",
+      "before": {
+        "execution_ms": [
+          23.748,
+          23.59,
+          23.566,
+          23.388,
+          23.578
+        ],
+        "median_execution_ms": 23.578,
+        "planning_ms": [
+          0.003,
+          0.003,
+          0.002,
+          0.002,
+          0.002
+        ],
+        "result_rows": 40,
+        "result_sha256": "2a984590c33840700a89e798a75485555de087865a31c903d6ff76afbd9a61c7"
+      },
+      "after": {
+        "execution_ms": [
+          23.847,
+          23.382,
+          23.739,
+          23.429,
+          23.631
+        ],
+        "median_execution_ms": 23.631,
+        "planning_ms": [
+          0.002,
+          0.002,
+          0.001,
+          0.002,
+          0.002
+        ],
+        "result_rows": 40,
+        "result_sha256": "2a984590c33840700a89e798a75485555de087865a31c903d6ff76afbd9a61c7"
+      }
+    },
+    "Q10": {
+      "execute": "EXECUTE pe_q10;",
+      "before": {
+        "execution_ms": [
+          28.09,
+          28.351,
+          28.083,
+          27.826,
+          28.397
+        ],
+        "median_execution_ms": 28.09,
+        "planning_ms": [
+          0.002,
+          0.002,
+          0.001,
+          0.001,
+          0.002
+        ],
+        "result_rows": 40,
+        "result_sha256": "06595a679036c0209b01642c860c81e07e0b23fe5e3b37c17c333798206ddd8d"
+      },
+      "after": {
+        "execution_ms": [
+          28.162,
+          28.206,
+          28.054,
+          28.257,
+          27.907
+        ],
+        "median_execution_ms": 28.162,
+        "planning_ms": [
+          0.002,
+          0.002,
+          0.002,
+          0.001,
+          0.002
+        ],
+        "result_rows": 40,
+        "result_sha256": "06595a679036c0209b01642c860c81e07e0b23fe5e3b37c17c333798206ddd8d"
+      }
+    },
+    "Q11": {
+      "execute": "EXECUTE pe_q11(md5('qr-1') || md5('credential-1'),\n              '00000000-0000-0000-0000-000000020001',\n              '00000000-0000-0000-0000-000000000003', '2026-11-01 10:00+05:30');",
+      "before": {
+        "execution_ms": [
+          0.03,
+          0.026,
+          0.022,
+          0.02,
+          0.028
+        ],
+        "median_execution_ms": 0.026,
+        "planning_ms": [
+          0.277,
+          0.304,
+          0.238,
+          0.241,
+          0.327
+        ],
+        "result_rows": 1,
+        "result_sha256": "edb8e0042f251addcacf8552d3164b79970fb842e0d8234578e6a99874fea4c3"
+      },
+      "after": {
+        "execution_ms": [
+          0.031,
+          0.022,
+          0.021,
+          0.03,
+          0.02
+        ],
+        "median_execution_ms": 0.022,
+        "planning_ms": [
+          0.295,
+          0.261,
+          0.251,
+          0.323,
+          0.242
+        ],
+        "result_rows": 1,
+        "result_sha256": "edb8e0042f251addcacf8552d3164b79970fb842e0d8234578e6a99874fea4c3"
+      }
+    },
+    "Q12": {
+      "execute": "EXECUTE pe_q12;",
+      "before": {
+        "execution_ms": [
+          0.02,
+          0.028,
+          0.02,
+          0.018,
+          0.018
+        ],
+        "median_execution_ms": 0.02,
+        "planning_ms": [
+          0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.0
+        ],
+        "result_rows": 20,
+        "result_sha256": "2edd343b563aafdcc55732116d9536f9906d7ff29e8248906d9d19abb24ef4f2"
+      },
+      "after": {
+        "execution_ms": [
+          0.019,
+          0.015,
+          0.014,
+          0.014,
+          0.014
+        ],
+        "median_execution_ms": 0.014,
+        "planning_ms": [
+          0.001,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "result_rows": 20,
+        "result_sha256": "2edd343b563aafdcc55732116d9536f9906d7ff29e8248906d9d19abb24ef4f2"
+      }
+    }
+  },
+  "validation": [
+    "12 queries executed successfully",
+    "Before/after results identical",
+    "Expected result row counts matched",
+    "Adjacent windows remain available",
+    "Cancelled bookings release bays",
+    "Invalid windows return no bays",
+    "Zero-inventory mall retained with zero counts"
+  ]
+}
